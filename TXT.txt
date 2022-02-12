@@ -1,0 +1,5 @@
+authservice provider
+app service provider
+middlewares
+env
+config [cors, querybuilder, sanctum]
