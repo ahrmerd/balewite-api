@@ -7,7 +7,7 @@ use Illuminate\Routing\Controller as BaseController;
 
 /**
  * @OA\Info(
- * title="Your super ApplicationAPI",
+ * title="Balewite Api Documentation",
  * version="1.0.0",
  * )
  * @OA\Parameter(
