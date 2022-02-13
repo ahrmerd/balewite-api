@@ -1,0 +1,2116 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Your super ApplicationAPI",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/announcements": {
+            "get": {
+                "tags": [
+                    "announcements"
+                ],
+                "description": "Returns all announcements",
+                "operationId": "findAnnouncements",
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "sorts items base of field provided",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "id",
+                                "-id",
+                                "created_at",
+                                "-created_at",
+                                "priority",
+                                "-priority",
+                                "-title",
+                                "title"
+                            ]
+                        },
+                        "examples": {
+                            "-id": {
+                                "summary": "sorts in an descending manner by append a '-' ",
+                                "value": "-id"
+                            },
+                            "id": {
+                                "summary": "sorts in an ascending manner",
+                                "value": "id"
+                            }
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "filters base on the parameter passed e.g filter[label]=event",
+                        "required": false,
+                        "schema": {
+                            "properties": {
+                                "user_id": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number",
+                                        "example": "1"
+                                    }
+                                },
+                                "priority": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number",
+                                        "example": "1"
+                                    }
+                                },
+                                "label": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "event"
+                                    }
+                                },
+                                "title": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "mss walimah"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "$ref": "#components/parameters/range"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success respones",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Announcement"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Requested filter(s) `description, are not allowed. Allowed filter(s) are `created_at` "
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/announcements/{id}": {
+            "get": {
+                "tags": [
+                    "announcements"
+                ],
+                "description": "Returns an announcement based on a single ID",
+                "operationId": "findAnnouncementById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of annnouncement to fetch",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "single announcement response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Announcement"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": ""
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/articles": {
+            "get": {
+                "tags": [
+                    "articles"
+                ],
+                "description": "Returns all articles",
+                "operationId": "findArticles",
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "sorts items base of field provided",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "id",
+                                "-id",
+                                "created_at",
+                                "-created_at",
+                                "priority",
+                                "-priority",
+                                "-title",
+                                "title"
+                            ]
+                        },
+                        "examples": {
+                            "-id": {
+                                "summary": "sorts in an descending manner by append a '-' ",
+                                "value": "-id"
+                            },
+                            "id": {
+                                "summary": "sorts in an ascending manner",
+                                "value": "id"
+                            }
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "filters base on the parameter passed e.g filter[label]=event",
+                        "required": false,
+                        "schema": {
+                            "properties": {
+                                "user_id": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number",
+                                        "example": "1"
+                                    }
+                                },
+                                "priority": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number",
+                                        "example": "1"
+                                    }
+                                },
+                                "label": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "event"
+                                    }
+                                },
+                                "title": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "mss walimah"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "$ref": "#components/parameters/range"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success respones",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Article"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Requested filter(s) `description, are not allowed. Allowed filter(s) are `created_at` "
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/articles/{id}": {
+            "get": {
+                "tags": [
+                    "articles"
+                ],
+                "description": "Returns an article based on a single ID",
+                "operationId": "findArticleById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of article to fetch",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "single article response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Article"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": ""
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "login with username or email",
+                "description": "Login by email, password",
+                "operationId": "authLogin",
+                "requestBody": {
+                    "description": "Pass user credentials",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Wrong credentials response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "These credentials do not match our records."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "get": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "logout authenticated user",
+                "operationId": "authLogout",
+                "responses": {
+                    "200": {
+                        "description": "Successfully logged out"
+                    },
+                    "500": {
+                        "description": "server error"
+                    }
+                }
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Register a user",
+                "operationId": "authRegister",
+                "requestBody": {
+                    "description": "Pass user credentials",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "username",
+                                    "department_id",
+                                    "phone"
+                                ],
+                                "properties": {
+                                    "department_id": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "username": {
+                                        "type": "string",
+                                        "example": "user1"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "08122223334"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The email is required"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/courses": {
+            "get": {
+                "tags": [
+                    "courses"
+                ],
+                "description": "Returns courses",
+                "operationId": "findCourses",
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "sorts items base of field provided",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "id",
+                                "-id",
+                                "created_at",
+                                "-created_at",
+                                "code",
+                                "-code",
+                                "-name",
+                                "name"
+                            ]
+                        },
+                        "examples": {
+                            "-id": {
+                                "summary": "sorts in an descending manner by append a '-' ",
+                                "value": "-id"
+                            },
+                            "id": {
+                                "summary": "sorts in an ascending manner",
+                                "value": "id"
+                            }
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "filters base on the parameter passed e.g filter[field]=value",
+                        "required": false,
+                        "style": "deepObject",
+                        "schema": {
+                            "properties": {
+                                "level_id": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number",
+                                        "example": "1"
+                                    }
+                                },
+                                "code": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "mat101"
+                                    }
+                                },
+                                "name": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "Elementary Algebra"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "name": "include",
+                        "in": "query",
+                        "description": "includes the details of the field included e.g include='materials'",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "department",
+                                    "level",
+                                    "materials",
+                                    "quizzes",
+                                    "lectures"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#components/parameters/range"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Course"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400"
+                    }
+                }
+            }
+        },
+        "/api/courses/{id}": {
+            "get": {
+                "tags": [
+                    "courses"
+                ],
+                "description": "Returns a material based on a single ID",
+                "operationId": "findCoursesById",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Course"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404"
+                    }
+                }
+            }
+        },
+        "/api/courses/{id}/departments": {
+            "get": {
+                "tags": [
+                    "materials"
+                ],
+                "description": "Returns a material based on a single ID",
+                "operationId": "findCourseDepartmentsById",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Department"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404"
+                    }
+                }
+            }
+        },
+        "/api/departments": {
+            "get": {
+                "tags": [
+                    "departments"
+                ],
+                "description": "Returns all departments",
+                "operationId": "findDepartments",
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "sorts items base of field provided",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "id",
+                                "-id",
+                                "created_at",
+                                "-created_at",
+                                "department",
+                                "-department"
+                            ]
+                        },
+                        "examples": {
+                            "-id": {
+                                "summary": "sorts in an descending manner by append a '-' ",
+                                "value": "-id"
+                            },
+                            "id": {
+                                "summary": "sorts in an ascending manner",
+                                "value": "id"
+                            }
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "filters base on the parameter passed e.g filter[faculty_id]=5",
+                        "required": false,
+                        "schema": {
+                            "properties": {
+                                "faculty_id": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number",
+                                        "example": "1"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "$ref": "#components/parameters/range"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success respones",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Department"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Requested filter(s) `description, are not allowed. Allowed filter(s) are `created_at` "
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/departments/{id}": {
+            "get": {
+                "tags": [
+                    "departments"
+                ],
+                "description": "Returns a department based on a single ID",
+                "operationId": "findDepartmentById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of department to fetch",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "single department response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Department"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": ""
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/departments/{id}/courses": {
+            "get": {
+                "tags": [
+                    "departments"
+                ],
+                "description": "Returns all course registered for a department",
+                "operationId": "findDepartmentsCourses",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of department for which courses are to be fetch",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "courses respones",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Department"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Error: Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No query results for model [App\\\\Models\\\\Model] 2"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/faculties": {
+            "get": {
+                "tags": [
+                    "faculties"
+                ],
+                "description": "Returns faculties",
+                "operationId": "findFaculties",
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "sorts items base of field provided",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "id",
+                                "-id",
+                                "created_at",
+                                "-created_at",
+                                "faculty",
+                                "-faculty"
+                            ]
+                        },
+                        "examples": {
+                            "-id": {
+                                "summary": "sorts in an descending manner by append a '-' ",
+                                "value": "-id"
+                            },
+                            "id": {
+                                "summary": "sorts in an ascending manner",
+                                "value": "id"
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#components/parameters/range"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success respones",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Faculty"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Requested filter(s) `description, are not allowed. Allowed filter(s) are `created_at` "
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/faculties/{id}": {
+            "get": {
+                "tags": [
+                    "faculties"
+                ],
+                "description": "Returns a faculty based on a single ID",
+                "operationId": "findFacultyById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of faculty to fetch",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "single department response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Faculty"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": ""
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/lectures": {
+            "get": {
+                "tags": [
+                    "lectures"
+                ],
+                "description": "Returns lectures",
+                "operationId": "findLectures",
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "sorts items base of field provided",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "id",
+                                "-id",
+                                "created_at",
+                                "-created_at",
+                                "course_id",
+                                "-course_id",
+                                "-location",
+                                "location",
+                                "day_id",
+                                "-day_id",
+                                "period_id",
+                                "-period_id"
+                            ]
+                        },
+                        "examples": {
+                            "-id": {
+                                "summary": "sorts in an descending manner by append a '-' ",
+                                "value": "-id"
+                            },
+                            "id": {
+                                "summary": "sorts in an ascending manner",
+                                "value": "id"
+                            }
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "filters base on the parameter passed e.g filter[field]=value",
+                        "required": false,
+                        "style": "deepObject",
+                        "schema": {
+                            "properties": {
+                                "course_id": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number",
+                                        "example": "1"
+                                    }
+                                },
+                                "period_id": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number",
+                                        "example": "1"
+                                    }
+                                },
+                                "day_id": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number",
+                                        "example": "1"
+                                    }
+                                },
+                                "location": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "nlt"
+                                    }
+                                },
+                                "lecturer": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "lecturer a"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "name": "include",
+                        "in": "query",
+                        "description": "includes the details of the field included e.g include='course'",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "day",
+                                    "period",
+                                    "course"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#components/parameters/range"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success respones",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Course"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400"
+                    }
+                }
+            }
+        },
+        "/api/lecture/{id}": {
+            "get": {
+                "tags": [
+                    "lectures"
+                ],
+                "description": "Returns a material based on a single ID",
+                "operationId": "findLectureById",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Lecture"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404"
+                    }
+                }
+            }
+        },
+        "/api/materials": {
+            "get": {
+                "tags": [
+                    "materials"
+                ],
+                "description": "Returns materials",
+                "operationId": "findMaterials",
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "sorts items base of field provided",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "id",
+                                "-id",
+                                "created_at",
+                                "-created_at",
+                                "course_id",
+                                "-course_id",
+                                "-title",
+                                "title"
+                            ]
+                        },
+                        "examples": {
+                            "-id": {
+                                "summary": "sorts in an descending manner by append a '-' ",
+                                "value": "-id"
+                            },
+                            "id": {
+                                "summary": "sorts in an ascending manner",
+                                "value": "id"
+                            }
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "filters base on the parameter passed e.g filter[field]=value",
+                        "required": false,
+                        "style": "deepObject",
+                        "schema": {
+                            "properties": {
+                                "course_id": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number",
+                                        "example": "1"
+                                    }
+                                },
+                                "title": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "mat101"
+                                    }
+                                },
+                                "description": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "pdf"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "$ref": "#components/parameters/range"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Material"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400"
+                    }
+                }
+            }
+        },
+        "/api/materials/{id}": {
+            "get": {
+                "tags": [
+                    "materials"
+                ],
+                "description": "Returns a material based on a single ID",
+                "operationId": "findMaterialById",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "single material response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Material"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404"
+                    }
+                }
+            }
+        },
+        "/api/quizzes": {
+            "get": {
+                "tags": [
+                    "quizzes"
+                ],
+                "description": "Returns quizzes",
+                "operationId": "findQuizzes",
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "sorts items base of field provided",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "id",
+                                "-id",
+                                "created_at",
+                                "-created_at",
+                                "course_id",
+                                "-course_id",
+                                "-title",
+                                "title"
+                            ]
+                        },
+                        "examples": {
+                            "-id": {
+                                "summary": "sorts in an descending manner by append a '-' ",
+                                "value": "-id"
+                            },
+                            "id": {
+                                "summary": "sorts in an ascending manner",
+                                "value": "id"
+                            }
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "filters base on the parameter passed e.g filter[field]=value",
+                        "required": false,
+                        "style": "deepObject",
+                        "schema": {
+                            "properties": {
+                                "course_id": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number",
+                                        "example": "1"
+                                    }
+                                },
+                                "title": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "mat101"
+                                    }
+                                },
+                                "year": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "2012"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "$ref": "#components/parameters/range"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success respones",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Quiz"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400"
+                    }
+                }
+            }
+        },
+        "/api/quizzes/{id}": {
+            "get": {
+                "tags": [
+                    "quizzes"
+                ],
+                "description": "Returns a quiz based on a single ID",
+                "operationId": "findQuizById",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "single quiz response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/QuizResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ChoiceResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "choice": {
+                        "type": "string"
+                    },
+                    "is_answer": {
+                        "type": "boolean"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "ChoiceResource"
+                }
+            },
+            "QuestionResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "question": {
+                        "type": "string"
+                    },
+                    "quiz_id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "choices": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ChoiceResource"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "QuestionResource"
+                }
+            },
+            "QuizResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "course_id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "year": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/created_at"
+                    },
+                    "questions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/QuestionResource"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "QuizResource"
+                }
+            },
+            "Announcement": {
+                "required": [
+                    "title",
+                    "announcement",
+                    "user_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "label": {
+                        "type": "string"
+                    },
+                    "announcement": {
+                        "type": "string"
+                    },
+                    "priority": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "image": {
+                        "type": "boolean"
+                    },
+                    "image_url": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/created_at"
+                    },
+                    "updated_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/updated_at"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Announcement"
+                }
+            },
+            "Article": {
+                "required": [
+                    "title",
+                    "article",
+                    "user_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "label": {
+                        "type": "string"
+                    },
+                    "article": {
+                        "description": "article body or contents",
+                        "type": "string"
+                    },
+                    "priority": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "created_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/created_at"
+                    },
+                    "updated_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/updated_at"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Article"
+                }
+            },
+            "Choice": {
+                "required": [
+                    "choice",
+                    "quiz_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "choice": {
+                        "type": "string"
+                    },
+                    "quiz_id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "is_answer": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/created_at"
+                    },
+                    "updated_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/updated_at"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Choice"
+                }
+            },
+            "Course": {
+                "required": [
+                    "code",
+                    "level_id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "name": {
+                        "description": "the course title or course name",
+                        "type": "string"
+                    },
+                    "code": {
+                        "description": "the course code",
+                        "type": "string"
+                    },
+                    "level_id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "created_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/created_at"
+                    },
+                    "updated_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/updated_at"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Course"
+                }
+            },
+            "Day": {
+                "required": [
+                    "day"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "day": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/created_at"
+                    },
+                    "updated_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/updated_at"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Day"
+                }
+            },
+            "Department": {
+                "required": [
+                    "department",
+                    "faculty_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "department": {
+                        "type": "string"
+                    },
+                    "banner": {
+                        "type": "string"
+                    },
+                    "faculty_id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "created_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/created_at"
+                    },
+                    "updated_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/updated_at"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Department"
+                }
+            },
+            "Faculty": {
+                "required": [
+                    "faculty"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "faculty": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/created_at"
+                    },
+                    "updated_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/updated_at"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Faculty"
+                }
+            },
+            "Lecture": {
+                "required": [
+                    "course_id",
+                    "day_id",
+                    "period_id",
+                    "location",
+                    "lecturer"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "course_id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "day_id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "period_id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "location": {
+                        "type": "string"
+                    },
+                    "lecturer": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/created_at"
+                    },
+                    "updated_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/updated_at"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Lecture"
+                }
+            },
+            "Level": {
+                "required": [
+                    "level"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "level": {
+                        "type": "integer",
+                        "example": "300"
+                    },
+                    "created_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/created_at"
+                    },
+                    "updated_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/updated_at"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Level"
+                }
+            },
+            "Material": {
+                "required": [
+                    "course_id",
+                    "title",
+                    "description",
+                    "url"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "course_id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/created_at"
+                    },
+                    "updated_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/updated_at"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Material"
+                }
+            },
+            "Message": {
+                "required": [
+                    "message",
+                    "user_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "created_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/created_at"
+                    },
+                    "updated_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/updated_at"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Messaage"
+                }
+            },
+            "BaseModel": {
+                "properties": {
+                    "created_at": {
+                        "description": "Initial creation timestamp",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": "true"
+                    },
+                    "updated_at": {
+                        "description": "Last update timestamp",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": "true"
+                    },
+                    "deleted_at": {
+                        "description": "Soft delete timestamp",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": "true"
+                    }
+                },
+                "type": "object"
+            },
+            "Period": {
+                "required": [
+                    "start_time",
+                    "end_time"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "start_time": {
+                        "type": "string"
+                    },
+                    "end_time": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/created_at"
+                    },
+                    "updated_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/updated_at"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Period"
+                }
+            },
+            "Question": {
+                "required": [
+                    "question",
+                    "quiz_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "question": {
+                        "type": "string"
+                    },
+                    "quiz_id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "created_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/created_at"
+                    },
+                    "updated_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/updated_at"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Question"
+                }
+            },
+            "Quiz": {
+                "required": [
+                    "title",
+                    "course_id",
+                    "year"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "year": {
+                        "type": "string"
+                    },
+                    "course_id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "created_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/created_at"
+                    },
+                    "updated_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/updated_at"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Quiz"
+                }
+            },
+            "User": {
+                "required": [
+                    "password",
+                    "department_id",
+                    "email",
+                    "username",
+                    "phone_number",
+                    "authorization_level"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "department_id": {
+                        "type": "integer",
+                        "readOnly": "true"
+                    },
+                    "username": {
+                        "description": "User unique username",
+                        "type": "string"
+                    },
+                    "phone_number": {
+                        "description": "User phone number",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "User unique email address",
+                        "type": "string",
+                        "format": "email",
+                        "readOnly": "true",
+                        "example": "user@gmail.com"
+                    },
+                    "email_verified_at": {
+                        "description": "Datetime marker of verification status",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": "true",
+                        "example": "2019-02-25 12:59:20"
+                    },
+                    "authorization_level": {
+                        "description": "number from 1-11 level 5 above = moderator, level 8 above is admin",
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/created_at"
+                    },
+                    "updated_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/updated_at"
+                    },
+                    "deleted_at": {
+                        "$ref": "#/components/schemas/BaseModel/properties/deleted_at"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "User"
+                }
+            }
+        },
+        "responses": {
+            "404": {
+                "description": "not found",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": ""
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "400": {
+                "description": "Error: Bad Request",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Requested filter(s) `description, are not allowed. Allowed filter(s) are `created_at` "
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "range": {
+                "name": "range",
+                "in": "query",
+                "description": "the range of items to be fetched e.g range[10, 20]",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "sort": {
+                "name": "sort",
+                "in": "query",
+                "description": "sorts items base of field provided",
+                "required": false,
+                "examples": {
+                    "-id": {
+                        "summary": "sorts in an descending manner by append a '-' ",
+                        "value": "-id"
+                    },
+                    "id": {
+                        "summary": "sorts in an ascending manner",
+                        "value": "id"
+                    }
+                }
+            },
+            "filter": {
+                "name": "filter",
+                "in": "query",
+                "description": "filters base on the parameter passed e.g filter[field]=value",
+                "required": false,
+                "style": "deepObject"
+            },
+            "id": {
+                "name": "id",
+                "in": "path",
+                "description": "ID of model to fetch",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}

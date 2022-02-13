@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\ThrottlesLogins;
 use Illuminate\Validation\ValidationException;
 
+
+
 class LoginController extends Controller
 {
     use ThrottlesLogins;
@@ -18,6 +20,40 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    /**
+     * @OA\Post(
+     * path="/api/login",
+     * summary="login with username or email",
+     * description="Login by email, password",
+     * operationId="authLogin",
+     * tags={"auth"},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Pass user credentials",
+     *    @OA\JsonContent(
+     *       required={"email","password"},
+     *       @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
+     *       @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
+     *    ),
+     * ),
+     *  @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     @OA\Schema(ref="#/components/schemas/User"),
+     *     @OA\JsonContent(ref="#/components/schemas/User"),
+     *
+     *  ),
+     *
+     * @OA\Response(
+     *    response=422,
+     *    description="Wrong credentials response",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="These credentials do not match our records.")
+     *        ),
+     *     )
+     *
+     * )
+     */
     public function login(Request $request)
     {
         $this->validateLogin($request);
@@ -90,9 +126,30 @@ class LoginController extends Controller
         return $request->has('email') ? 'email' : 'username';
     }
 
+
+    /**
+     * @OA\Get(
+     * path="/api/logout",
+     * summary="logout authenticated user",
+     * operationId="authLogout",
+     * tags={"auth"},
+     *
+     *  @OA\Response(
+     *     response=200,
+     *     description="Successfully logged out",
+     *  ),
+     *
+     * @OA\Response(
+     *    response=500,
+     *    description="server error",
+     *     )
+     * )
+     */
     public function logout(Request $request)
     {
-        Auth::logout();
+        if (Auth::check()) {
+            Auth::logout();
+        }
         // $this->guard()->logout();
 
         // if (method_exists($request, 'session')) {
@@ -100,11 +157,10 @@ class LoginController extends Controller
         //     $request->session()->regenerateToken();
         // }
 
-        if ($response = $this->loggedOut($request)) {
-            return $response;
+        if (Auth::check()) {
+            return response('unable to logout', 500);
         }
-
-        return response('logged out success', 202);
+        return response('logged out success', 200);
     }
 
     protected function loggedOut(Request $request)

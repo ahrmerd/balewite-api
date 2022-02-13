@@ -6,6 +6,21 @@ use App\Traits\HasRange;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
+/**
+ * @OA\Schema(
+ * @OA\Xml(name="Course"),
+ *
+ * required={"code", "level_id", "name"},
+ *  @OA\Property(property="id", type="integer", readOnly="true", example="1"),
+ * @OA\Property(property="name", type="string", description="the course title or course name"),
+ * @OA\Property(property="code", type="string", description="the course code"),
+ * @OA\Property(property="level_id", type="integer", readOnly="true", example="1"),
+ * @OA\Property(property="created_at", ref="#/components/schemas/BaseModel/properties/created_at"),
+ * @OA\Property(property="updated_at", ref="#/components/schemas/BaseModel/properties/updated_at"),
+ * )
+ */
+
 class Course extends Model
 {
     use HasFactory, HasRange;

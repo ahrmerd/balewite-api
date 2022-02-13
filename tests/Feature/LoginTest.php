@@ -57,7 +57,7 @@ class LoginTest extends TestCase
     {
         $this->post('/api/register', $this->registerPayload)->assertstatus(201);
         $this->assertTrue(Auth::check());
-        $this->post('/api/logout')->assertStatus(202)->assertSee('logged out success');
+        $this->post('/api/logout')->assertStatus(200)->assertSee('logged out success');
         $this->assertNotTrue(Auth::check());
     }
 

@@ -4,6 +4,14 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @OA\Schema(
+ * @OA\Xml(name="ChoiceResource"),
+ *  @OA\Property(property="id", type="integer", readOnly="true", example="1"),
+ * @OA\Property(property="choice", type="string"),
+ * @OA\Property(property="is_answer", type="boolean"),
+ * )
+ */
 class ChoiceResource extends JsonResource
 {
     /**

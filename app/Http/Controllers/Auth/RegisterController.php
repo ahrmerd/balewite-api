@@ -50,6 +50,42 @@ class RegisterController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Post(
+     * path="/api/register",
+     * summary="Register a user",
+     * operationId="authRegister",
+     * tags={"auth"},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Pass user credentials",
+     *    @OA\JsonContent(
+     *       required={"email","password", "username" , "department_id", "phone"},
+     *       @OA\Property(property="department_id", type="string", format="email", example="user1@mail.com"),
+     *       @OA\Property(property="username", type="string", example="user1"),
+     *       @OA\Property(property="phone", type="string", example="08122223334"),
+     *       @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
+     *       @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
+     *    ),
+     * ),
+     *  @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     @OA\Schema(ref="#/components/schemas/User"),
+     *     @OA\JsonContent(ref="#/components/schemas/User"),
+     *
+     *  ),
+     *
+     * @OA\Response(
+     *    response=422,
+     *    description="validation error response",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="The email is required")
+     *        ),
+     *     )
+     *
+     * )
+     */
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
