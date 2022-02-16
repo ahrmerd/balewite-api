@@ -56,6 +56,8 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
+        if (Auth::check())
+            return response('you are already logged in');
         $this->validateLogin($request);
         if (method_exists($this, 'hasTooManyLoginAttempts') && $this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
@@ -63,7 +65,6 @@ class LoginController extends Controller
         }
 
         if ($this->attemptLogin($request)) {
-            return Auth::user();
             return $this->sendLoginResponse($request);
         }
 
@@ -107,12 +108,12 @@ class LoginController extends Controller
             return $response;
         }
 
-        return response('success', 202);
+        return response('success', 200);
     }
 
     protected function authenticated(Request $request, $user)
     {
-        return response('success', 202);
+        return response('success', 200);
     }
     protected function sendFailedLoginResponse(Request $request)
     {
