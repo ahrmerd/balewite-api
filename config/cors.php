@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://admin.b.test', 'http://mod.b.test', 'http://b.test'],
+    'allowed_origins' => ['https://admin.balewite.com.ng', 'https://mod.balewite.com.ng', 'https://balewite.com.ng'],
 
     'allowed_origins_patterns' => [],
 

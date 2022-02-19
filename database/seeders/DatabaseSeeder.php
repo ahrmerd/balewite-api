@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminSeeder::class,
             DaySeeder::class,
-            PeriodSeeder::class
+            PeriodSeeder::class,
+            LevelSeeder::class,
         ]);
     }
 }

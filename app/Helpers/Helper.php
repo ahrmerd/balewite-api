@@ -12,25 +12,28 @@ function foo()
 
 function requestResponseWithInludesFilterSortRange($model, $includes, $filters, $sorts, $callback)
 {
+    $modelInstance = new $model;
+    $total = $modelInstance::count();
     $models = QueryBuilder::for($model)
         ->allowedIncludes($includes)
         ->allowedFilters($filters)
         ->allowedSorts($sorts)
         ->withRange()
         ->get();
-    $total = $models->count();
+    $total = $modelInstance->count();
     $modelsCollection =  $callback($models);
     return response($modelsCollection)->header('Total-Count', $total);
 }
 function requestResponseWithFilterRangeSort($model, $searchField, $filters, $sorts, $callback)
 {
+    $modelInstance = new $model;
+    $total = $modelInstance::count();
     $models = QueryBuilder::for($model)
         ->allowedFilters($filters)
         ->allowedSorts($sorts)
         ->withRange()
         ->searchIn($searchField)
         ->get();
-    $total = $models->count();
     $modelsCollection =  $callback($models);
     return response($modelsCollection)->header('Total-Count', $total);
 }
