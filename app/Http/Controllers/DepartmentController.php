@@ -8,6 +8,7 @@ use Spatie\QueryBuilder\AllowedFilter;
 use App\Http\Resources\DepartmentResource;
 use App\Http\Requests\StoreDepartmentRequest;
 use App\Http\Requests\UpdateDepartmentRequest;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class DepartmentController extends Controller
 {
@@ -155,7 +156,16 @@ class DepartmentController extends Controller
      */
     public function courses(Department $department)
     {
-        return $department->courses;
+        $includes = ['departments', 'level', 'materials', 'quizzes', 'lectures'];
+        $sorts = ['id', 'code', 'name', 'level_id', 'created_at'];
+        $filters = ['code', 'name', AllowedFilter::exact('level_id')];
+
+        return QueryBuilder::for($department->courses())
+            ->allowedFilters($filters)
+            ->allowedSorts($sorts)
+            ->allowedIncludes($includes)
+            ->withRange()
+            ->get();
     }
     public function update(UpdateDepartmentRequest $request, Department $department)
     {
