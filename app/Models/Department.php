@@ -39,10 +39,6 @@ class Department extends Model
         return $this->hasMany(User::class);
     }
 
-    public function material()
-    {
-        return $this->hasMany(Material::class);
-    }
 
     public function courses()
     {
