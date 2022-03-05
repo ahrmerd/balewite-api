@@ -25,8 +25,8 @@ class Material extends Model
 {
     use HasFactory, HasRange;
 
-    public function department()
+    public function course()
     {
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Course::class);
     }
 }

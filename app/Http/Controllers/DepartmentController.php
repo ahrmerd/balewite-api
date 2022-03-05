@@ -8,6 +8,8 @@ use Spatie\QueryBuilder\AllowedFilter;
 use App\Http\Resources\DepartmentResource;
 use App\Http\Requests\StoreDepartmentRequest;
 use App\Http\Requests\UpdateDepartmentRequest;
+use App\Models\Material;
+use App\Models\Quiz;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class DepartmentController extends Controller
@@ -142,7 +144,7 @@ class DepartmentController extends Controller
      *         description="courses respones",
      *         @OA\JsonContent(
      *             type="array",
-     *             @OA\Items(ref="#/components/schemas/Department")
+     *             @OA\Items(ref="#/components/schemas/Course")
      *         ),
      *     ),
      *      @OA\Response(
@@ -167,6 +169,96 @@ class DepartmentController extends Controller
             ->withRange()
             ->get();
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/departments/{id}/materials",
+     *     description="Returns all materials registered for a department",
+     *     operationId="findDepartmentMaterials",
+     *     tags={"departments"},
+     *     @OA\Parameter(
+     *         description="ID of department for which materials are to be fetch",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64",
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success respones",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Material")
+     *         ),
+     *     ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Error: Not Found",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="No query results for model [App\\Models\\Model] 2")
+     *         ),
+     *     ),
+     * )
+     */
+
+
+    public function materials(Department $department)
+    {
+        $course_ids = [];
+        $ids = $department->courses()->get(['courses.id'])->toArray();
+        foreach ($ids as $id => $value) {
+            $course_ids[] = $value['id'];
+        }
+        return Material::query()->whereIn('course_id', $course_ids)->get();
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/departments/{id}/quizzes",
+     *     description="Returns all quizzes associated with a department",
+     *     operationId="findDepartmentQuizzes",
+     *     tags={"quizzes"},
+     *     @OA\Parameter(
+     *         description="ID of department for which materials are to be fetch",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64",
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success respones",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Quiz")
+     *         ),
+     *     ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Error: Not Found",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="No query results for model [App\\Models\\Model] 2")
+     *         ),
+     *     ),
+     * )
+     */
+
+    public function quizzes(Department $department)
+    {
+        $course_ids = [];
+        $ids = $department->courses()->get(['courses.id'])->toArray();
+        foreach ($ids as $id => $value) {
+            $course_ids[] = $value['id'];
+        }
+        return Quiz::query()->whereIn('course_id', $course_ids)->get();
+    }
+
     public function update(UpdateDepartmentRequest $request, Department $department)
     {
         $department->update($request->only('department', 'banner'));
