@@ -136,7 +136,7 @@ class CourseController extends Controller
      *     path="/api/courses/{id}/departments",
      *     description="Returns a material based on a single ID",
      *     operationId="findCourseDepartmentsById",
-     *     tags={"materials"},
+     *     tags={"courses"},
      *     @OA\Parameter(
      *          ref="#/components/parameters/id",
      *     ),
