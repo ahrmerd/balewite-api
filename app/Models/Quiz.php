@@ -23,10 +23,6 @@ class Quiz extends Model
 {
     use HasFactory, HasRange;
 
-    public function department()
-    {
-        return $this->belongsTo(Department::class);
-    }
 
     public function questions()
     {

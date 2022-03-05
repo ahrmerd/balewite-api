@@ -29,16 +29,10 @@ class Department extends Model
         return $this->belongsTo(Faculty::class);
     }
 
-    public function quizzes()
-    {
-        return $this->hasMany(Quiz::class);
-    }
-
     public function users()
     {
         return $this->hasMany(User::class);
     }
-
 
     public function courses()
     {
