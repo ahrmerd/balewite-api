@@ -212,7 +212,14 @@ class DepartmentController extends Controller
         foreach ($ids as $id => $value) {
             $course_ids[] = $value['id'];
         }
-        return Material::query()->whereIn('course_id', $course_ids)->get();
+        $filters = [AllowedFilter::exact('course_id'), 'title', 'description'];
+        $sorts = ['id', 'title', 'created_at', 'course_id'];
+
+        return QueryBuilder::for(Material::query()->whereIn('course_id', $course_ids))
+            ->allowedFilters($filters)
+            ->allowedSorts($sorts)
+            ->withRange()
+            ->get();
     }
 
     /**
@@ -256,7 +263,13 @@ class DepartmentController extends Controller
         foreach ($ids as $id => $value) {
             $course_ids[] = $value['id'];
         }
-        return Quiz::query()->whereIn('course_id', $course_ids)->get();
+        $filters = ['title', 'year',  AllowedFilter::exact('course_id')];
+        $sorts = ['created_at', 'id', 'year', 'title'];
+        return QueryBuilder::for(Quiz::query()->whereIn('course_id', $course_ids))
+            ->allowedFilters($filters)
+            ->allowedSorts($sorts)
+            ->withRange()
+            ->get();
     }
 
     public function update(UpdateDepartmentRequest $request, Department $department)
