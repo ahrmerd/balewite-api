@@ -20,6 +20,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Models\Department;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,12 +49,11 @@ Route::resource('days', DayController::class);
 Route::resource('periods', PeriodController::class);
 
 //mod routes
-Route::resource('courses', CourseController::class);
-
 Route::get('courses/{course}/departments', [CourseController::class, 'departments']);
 Route::get('departments/{department}/courses', [DepartmentController::class, 'courses']);
-
-
+Route::get('departments/{department}/materials', [DepartmentController::class, 'materials']);
+Route::get('departments/{department}/quizzes', [DepartmentController::class, 'quizzes']);
+Route::resource('courses', CourseController::class);
 Route::resource('quizzes', QuizController::class);
 Route::resource('questions', QuestionController::class);
 Route::resource('choices', ChoiceController::class);
