@@ -26,7 +26,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Model::unguard();
-        // FacultyResource::withoutWrapping();
-        JsonResource::withoutWrapping();
+        // JsonResource::withoutWrapping();
     }
 }
