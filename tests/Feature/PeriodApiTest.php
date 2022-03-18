@@ -31,10 +31,17 @@ it('requires a the period field to create a period', function () {
 it('can return a period', function () {
     $model = period::factory()->create();
     $res = $this->get($this->endPoint . '/' . $model->id);
-    $res->assertJsonStructure(['id', 'created_at', 'start_time', 'end_time']);
     // expect($res->json())->toBe($model->toArray());
-    expect($res->json()['start_time'])->toBe($model->start_time);
-    expect($res->json()['end_time'])->toBe($model->end_time);
+    expect($res->json()['data']['start_time'])->toBe($model->start_time);
+    expect($res->json()['data']['end_time'])->toBe($model->end_time);
+});
+
+it('can return all periods', function () {
+    $this->withoutExceptionHandling();
+    $models = Period::factory(6)->create();
+    $res = $this->get($this->endPoint);
+    expect($res->json()['data'])->toBeArray()->toHaveLength(6);
+    $res->assertJsonStructure(['data' => [0 => ['id', 'created_at', 'start_time']]]);
 });
 
 it('can update a period', function () {

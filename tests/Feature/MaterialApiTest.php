@@ -41,13 +41,13 @@ it('validates material fields', function () {
 it('can return a list of material', function () {
     Material::factory(3)->create();
     $res = $this->get('api/materials');
-    expect($res->json())->toBeArray()->toHaveLength(3);
-    expect($res[0])->toHaveKeys(['id', 'course_id', 'title', 'description', 'url', 'created_at']);
+    expect($res->json()['data'])->toBeArray()->toHaveLength(3);
+    expect($res['data'][0])->toHaveKeys(['id', 'course_id', 'title', 'description', 'url', 'created_at']);
 });
 it('can return a material', function () {
     $material_id = Material::factory()->create()->id;
     $res = $this->get("api/materials/$material_id")->assertStatus(200);
-    expect($res->json())->toHaveKeys(
+    expect($res->json()['data'])->toHaveKeys(
         ['id', 'course_id', 'title', 'description', 'url', 'created_at']
     );
 });

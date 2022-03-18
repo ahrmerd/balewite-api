@@ -4,6 +4,8 @@ use App\Models\Course;
 use App\Models\User;
 use App\Models\Faculty;
 use App\Models\Department;
+use App\Models\Material;
+use App\Models\Quiz;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use function Pest\Laravel\assertDatabaseHas;
@@ -156,7 +158,7 @@ it(
     function () {
         Department::factory(3)->create();
         $res = $this->get('api/departments');
-        expect($res[0])->toHaveKeys(['id', 'department', 'faculty_id', 'created_at']);
+        expect($res['data'][0])->toHaveKeys(['id', 'department', 'faculty_id', 'created_at']);
     }
 );
 
@@ -166,7 +168,7 @@ it(
         $this->withoutExceptionHandling();
         $department = Department::factory()->create();
         $res = $this->get("api/departments/$department->id")->assertStatus(200);
-        expect($res->json())->toHaveKeys(
+        expect($res->json()['data'])->toHaveKeys(
             [
                 'id', 'department', 'faculty_id', 'created_at',
             ]
@@ -179,8 +181,27 @@ it('can return courses of departments', function () {
     $department = Department::factory()
         ->has(Course::factory()->count(3))->create();
     $res = $this->get('api/departments/' . $department->id . '/courses')->assertStatus(200);
-    expect($res->json())->toBeArray()->toHaveLength(3);
-    expect($res[0])->toHaveKeys(['id', 'created_at', 'code', 'level_id', 'name']);
+    expect($res->json()['data'])->toBeArray()->toHaveLength(3);
+    expect($res['data'][0])->toHaveKeys(['id', 'created_at', 'code', 'level_id', 'name']);
+});
+
+it('can return quizzes of departments', function () {
+    $this->withoutExceptionHandling();
+    $department = Department::factory()
+        ->has(Course::factory()->has(Quiz::factory()->count(5)))->create();
+    $res = $this->get('api/departments/' . $department->id . '/quizzes')->assertStatus(200);
+    // dump($res->json());
+    expect($res->json()['data'])->toBeArray()->toHaveLength(5);
+    expect($res['data'][0])->toHaveKeys(['id', 'created_at', 'course_id', 'year', 'title']);
+});
+
+it('can return materials of departments', function () {
+    $this->withoutExceptionHandling();
+    $department = Department::factory()
+        ->has(Course::factory()->has(Material::factory()->count(5)))->create();
+    $res = $this->get('api/departments/' . $department->id . '/materials')->assertStatus(200);
+    expect($res->json()['data'])->toBeArray()->toHaveLength(5);
+    expect($res['data'][0])->toHaveKeys(['id', 'created_at', 'course_id', 'url', 'title']);
 });
 
 it('return 404 when department cannot be found by id')->get('api/departments/455')->assertStatus(404);

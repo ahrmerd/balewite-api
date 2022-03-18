@@ -67,14 +67,14 @@ it('ensures that the title and announcement body is required', function () {
 it('can return a list of announcements', function () {
     Announcement::factory(3)->create();
     $res = $this->get('api/announcements');
-    expect($res->json())->toBeArray()->toHaveLength(3);
-    expect($res[0])->toHaveKeys(['id', 'title', 'announcement', 'label', 'priority', 'created_at']);
+    expect($res->json()['data'])->toBeArray()->toHaveLength(3);
+    expect($res['data'][0])->toHaveKeys(['id', 'title', 'announcement', 'label', 'priority', 'created_at']);
 });
 
 it('can return an announcement', function () {
     $announcement = Announcement::factory()->create();
     $res = $this->get("api/announcements/$announcement->id")->assertStatus(200);
-    expect($res->json())->toHaveKeys(
+    expect($res->json()['data'])->toHaveKeys(
         ['id', 'title', 'announcement', 'label', 'priority', 'created_at']
     );
 });

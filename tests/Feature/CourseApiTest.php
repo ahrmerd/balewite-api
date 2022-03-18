@@ -54,10 +54,10 @@ it('requires the course code, name and level to create a course', function () {
 it('can return a course', function () {
     $model = Course::factory()->create();
     $res = $this->get($this->endPoint . '/' . $model->id)->assertStatus(200);
-    $res->assertJsonStructure(['id', 'created_at', 'code', 'level_id', 'name']);
-    expect($res->json()['code'])->toBe($model->code);
-    expect($res->json()['name'])->toBe($model->name);
-    expect(intval($res->json()['level_id']))->toBe($model->level_id);
+    $res->assertJsonStructure(["data" => ['id', 'created_at', 'code', 'level_id', 'name']]);
+    expect($res['data']['code'])->toBe($model->code);
+    expect($res->json()['data']['name'])->toBe($model->name);
+    expect(intval($res->json()['data']['level_id']))->toBe($model->level_id);
 });
 it('can return departments of courses', function () {
     $this->withoutExceptionHandling();
@@ -71,8 +71,8 @@ it('can return departments of courses', function () {
 it('can return a list of courses', function () {
     $models = Course::factory(4)->create();
     $res = $this->get('api/courses');
-    expect($res->json())->toBeArray()->toHaveLength(4);
-    expect($res[0])->toHaveKeys(['id', 'created_at', 'code', 'level_id', 'name']);
+    expect($res->json()['data'])->toBeArray()->toHaveLength(4);
+    expect($res['data'][0])->toHaveKeys(['id', 'created_at', 'code', 'level_id', 'name']);
 });
 
 it('can update a course', function () {

@@ -50,15 +50,15 @@ it('requires a faculty name to be unique', function () {
 it('can return a list of faculties', function () {
     Faculty::factory(3)->create();
     $res = $this->get('api/faculties');
-    expect($res->json())->toBeArray()->toHaveLength(3);
-    expect($res[0])->toHaveKeys(['id', 'faculty', 'created_at']);
+    expect($res->json()['data'])->toBeArray()->toHaveLength(3);
+    expect($res['data'][0])->toHaveKeys(['id', 'faculty', 'created_at']);
 });
 
 it('can return a faculty', function () {
     $this->withoutExceptionHandling();
     $faculty = Faculty::factory()->create();
     $res = $this->get("api/faculties/$faculty->id")->assertStatus(200);
-    expect($res->json())->toHaveKeys([
+    expect($res->json()['data'])->toHaveKeys([
         'id', 'faculty', 'created_at',
     ]);
 });

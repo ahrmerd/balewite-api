@@ -62,19 +62,18 @@ it('requires course_id, day_id, and period_id to create a lecture', function () 
 it('can return a lecture', function () {
     $model = Lecture::factory()->create();
     $res = $this->get($this->endPoint . '/' . $model->id);
-    $res->assertJsonStructure(['id', 'created_at', 'course_id', 'day_id', 'period_id', 'location', 'lecturer']);
-    expect(intval($res->json()['course_id']))->toBe($model->course_id);
-    expect(intval($res->json()['day_id']))->toBe($model->day_id);
-    expect(intval($res->json()['period_id']))->toBe($model->period_id);
-    expect($res->json()['location'])->toBe($model->location);
-    expect($res->json()['lecturer'])->toBe($model->lecturer);
+    expect(intval($res->json()['data']['course_id']))->toBe($model->course_id);
+    expect(intval($res->json()['data']['day_id']))->toBe($model->day_id);
+    expect(intval($res->json()['data']['period_id']))->toBe($model->period_id);
+    expect($res->json()['data']['location'])->toBe($model->location);
+    expect($res->json()['data']['lecturer'])->toBe($model->lecturer);
 });
 
 it('can return a list of lectures', function () {
     $models = Lecture::factory(4)->create();
     $res = $this->get($this->endPoint);
-    expect($res->json())->toBeArray()->toHaveLength(4);
-    expect($res[0])->toHaveKeys(['id', 'created_at', 'course_id', 'day_id', 'period_id', 'location', 'lecturer']);
+    expect($res->json()['data'])->toBeArray()->toHaveLength(4);
+    expect($res['data'][0])->toHaveKeys(['id', 'created_at', 'course_id', 'day_id', 'period_id', 'location', 'lecturer']);
 });
 
 

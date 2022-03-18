@@ -42,15 +42,15 @@ it('requires a message to create a messsage', function () {
 it('can return paginated messages', function () {
     Message::factory(4)->create();
     $res = $this->get($this->endPoint);
-    expect($res->json())->toBeArray()->toHaveLength(4);
-    expect($res[0])->toHaveKeys(['id', 'created_at', 'message', 'user']);
+    expect($res->json()['data'])->toBeArray()->toHaveLength(4);
+    expect($res['data'][0])->toHaveKeys(['id', 'created_at', 'message', 'user']);
 });
 
 it('can return a message', function () {
     $this->withoutExceptionHandling();
     $message = Message::factory()->create();
     $res = $this->get($this->endPoint . '/' . $message->id);
-    $res->assertJsonStructure(['id', 'created_at', 'message', 'user']);
+    $res->assertJsonStructure(['data' => ['id', 'created_at', 'message', 'user']]);
 });
 
 it('can delete a message', function () {

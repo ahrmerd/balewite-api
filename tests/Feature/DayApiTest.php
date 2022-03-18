@@ -31,12 +31,19 @@ it('requires a the day field to create a day', function () {
     ]);;
 });
 
+it('can return all days', function () {
+    $this->withoutExceptionHandling();
+    $models = Day::factory(3)->create();
+    $res = $this->get($this->endPoint);
+    expect($res->json()['data'])->toBeArray()->toHaveLength(3);
+    $res->assertJsonStructure(['data' => [0 => ['id', 'created_at', 'day']]]);
+});
+
 it('can return a day', function () {
     $model = Day::factory()->create();
     $res = $this->get($this->endPoint . '/' . $model->id);
-    $res->assertJsonStructure(['id', 'created_at', 'day']);
-    // expect($res->json())->toBe($model->toArray());
-    expect($res->json()['day'])->toBe($model->day);
+    $res->assertJsonStructure(['data' => ['id', 'created_at', 'day']]);
+    expect($res->json()['data']['day'])->toBe($model->day);
 });
 
 it('can update a day', function () {

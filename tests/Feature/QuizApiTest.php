@@ -59,7 +59,7 @@ it('can add questions to a quiz', function () {
     asModerator($this);
     $res = createQuizQuestionsWithChoices($this);
     $response = $res['response']->assertStatus(201);
-    $response->assertJsonStructure(['id', 'question', 'choices']);
+    $response->assertJsonStructure(['data' => ['id', 'question', 'choices']]);
     $this->assertDatabaseHas('questions', [
         'question' => $res['question'],
     ]);
@@ -74,9 +74,9 @@ it('can add questions to a quiz', function () {
 it('can return a list of quizzes', function () {
     $quiz = Quiz::factory(4)->create();
     $res = $this->get($this->quizEndPoint);
-    expect($res->json())->toBeArray()->toHaveLength(4);
+    expect($res->json()['data'])->toBeArray()->toHaveLength(4);
     // dump($res->json());
-    expect($res[0])->toHaveKeys(['id', 'course_id', 'title', 'year']);
+    expect($res['data'][0])->toHaveKeys(['id', 'course_id', 'title', 'year']);
 });
 
 it('can return a single quiz with questions and choices', function () {
@@ -88,7 +88,7 @@ it('can return a single quiz with questions and choices', function () {
                 ->count(3)))
         ->create();
     $res = $this->get($this->quizEndPoint . '/' . $quiz->id)->assertStatus(200);
-    $res->assertJsonStructure(['id', 'course_id', 'title', 'questions' => [['id', 'question', 'choices']]]);
+    $res->assertJsonStructure(['data' => ['id', 'course_id', 'title', 'questions' => [['id', 'question', 'choices']]]]);
 });
 
 it('will return 404 if quiz is found', function () {

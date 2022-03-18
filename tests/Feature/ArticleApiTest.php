@@ -50,14 +50,14 @@ it('ensures that the aricle title and the body is required', function () {
 it('can return a list of articles', function () {
     Article::factory(3)->create();
     $res = $this->get('api/articles');
-    expect($res->json())->toBeArray()->toHaveLength(3);
-    expect($res[0])->toHaveKeys(['id', 'title', 'article', 'priority', 'created_at']);
+    expect($res->json()['data'])->toBeArray()->toHaveLength(3);
+    expect($res['data'][0])->toHaveKeys(['id', 'title', 'article', 'priority', 'created_at']);
 });
 
 it('can return an article', function () {
     $article = Article::factory()->create();
     $res = $this->get("api/articles/$article->id")->assertStatus(200);
-    expect($res->json())->toHaveKeys(
+    expect($res->json()['data'])->toHaveKeys(
         ['id', 'title', 'article', 'priority', 'created_at']
     );
 });

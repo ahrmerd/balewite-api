@@ -31,12 +31,20 @@ it('requires the level field to create a level', function () {
     ]);;
 });
 
+it('can return all levels', function () {
+    $this->withoutExceptionHandling();
+    $models = Level::factory(5)->create();
+    $res = $this->get($this->endPoint);
+    expect($res->json()['data'])->toBeArray()->toHaveLength(5);
+    $res->assertJsonStructure(['data' => [0 => ['id', 'created_at', 'level']]]);
+});
+
 it('can return a level', function () {
     $model = Level::factory()->create();
     $res = $this->get($this->endPoint . '/' . $model->id);
-    $res->assertJsonStructure(['id', 'created_at', 'level']);
+    $res->assertJsonStructure(['data' => ['id', 'created_at', 'level']]);
     // expect($res->json())->toBe($model->toArray());
-    expect(intval($res->json()['level']))->toBe($model->level);
+    expect(intval($res->json()['data']['level']))->toBe($model->level);
 });
 
 it('can update a level', function () {
