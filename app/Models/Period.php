@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasRange;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Period extends Model
 {
-    use HasFactory;
+    use HasFactory, HasRange;
 
     public function lectures()
     {
