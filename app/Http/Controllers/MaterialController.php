@@ -84,7 +84,7 @@ class MaterialController extends Controller
     {
         $filters = [AllowedFilter::exact('course_id'), 'title', 'description'];
         $sorts = ['id', 'title', 'created_at', 'course_id'];
-        return requestResponseWithFilterRangeSort(Material::class, 'description', $filters, $sorts, fn ($models) => $models);
+        return requestResponseWithFilterRangeSort(Material::class, 'description', $filters, $sorts, fn ($models) => BaseResource::collection($models));
     }
 
     public function store(StoreMaterialRequest $request)
@@ -114,7 +114,7 @@ class MaterialController extends Controller
      */
     public function show(Material $material)
     {
-        return $material;
+        return new BaseResource($material);
     }
     public function update(UpdateMaterialRequest $request, Material $material)
     {

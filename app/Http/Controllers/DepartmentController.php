@@ -8,6 +8,9 @@ use Spatie\QueryBuilder\AllowedFilter;
 use App\Http\Resources\DepartmentResource;
 use App\Http\Requests\StoreDepartmentRequest;
 use App\Http\Requests\UpdateDepartmentRequest;
+use App\Http\Resources\BaseResource;
+use App\Http\Resources\QuizCollection;
+use App\Http\Resources\QuizResource;
 use App\Models\Material;
 use App\Models\Quiz;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -77,6 +80,7 @@ class DepartmentController extends Controller
      */
     public function index(Request $request)
     {
+
         $sorts = ['id', 'created_at', 'department'];
         $filters = [AllowedFilter::exact('faculty_id')];
         return requestResponseWithFilterRangeSort(Department::class, 'department', $filters, $sorts, fn ($models) => DepartmentResource::collection($models));
@@ -162,12 +166,15 @@ class DepartmentController extends Controller
         $sorts = ['id', 'code', 'name', 'level_id', 'created_at'];
         $filters = ['code', 'name', AllowedFilter::exact('level_id')];
 
-        return QueryBuilder::for($department->courses())
+        // return requestResponseWithInludesFilterSortRange($department->courses(), $includes, $filters, $sorts, fn ($model) => BaseResource::collection($model));
+        $query = QueryBuilder::for($department->courses())
             ->allowedFilters($filters)
             ->allowedSorts($sorts)
             ->allowedIncludes($includes)
-            ->withRange()
-            ->get();
+            ->withRange();
+        $courses =  request()->has('page') ? $query
+            ->paginate() : $query->get();
+        return BaseResource::collection($courses);
     }
 
     /**
@@ -214,12 +221,13 @@ class DepartmentController extends Controller
         }
         $filters = [AllowedFilter::exact('course_id'), 'title', 'description'];
         $sorts = ['id', 'title', 'created_at', 'course_id'];
-
-        return QueryBuilder::for(Material::query()->whereIn('course_id', $course_ids))
+        $query = QueryBuilder::for(Material::query()->whereIn('course_id', $course_ids))
             ->allowedFilters($filters)
             ->allowedSorts($sorts)
-            ->withRange()
-            ->get();
+            ->withRange();
+        $materials  = request()->has('page') ? $query
+            ->paginate() : $query->get();
+        return BaseResource::collection($materials);
     }
 
     /**
@@ -265,11 +273,13 @@ class DepartmentController extends Controller
         }
         $filters = ['title', 'year',  AllowedFilter::exact('course_id')];
         $sorts = ['created_at', 'id', 'year', 'title'];
-        return QueryBuilder::for(Quiz::query()->whereIn('course_id', $course_ids))
+        $query = QueryBuilder::for(Quiz::query()->whereIn('course_id', $course_ids))
             ->allowedFilters($filters)
             ->allowedSorts($sorts)
-            ->withRange()
-            ->get();
+            ->withRange();
+        $quizzes = request()->has('page') ? $query
+            ->paginate() : $query->get();
+        return QuizCollection::collection($quizzes);
     }
 
     public function update(UpdateDepartmentRequest $request, Department $department)

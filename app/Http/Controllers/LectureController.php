@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLectureRequest;
 use App\Http\Requests\UpdateLectureRequest;
+use App\Http\Resources\BaseResource;
 use App\Models\Lecture;
 use Spatie\QueryBuilder\AllowedFilter;
 
@@ -97,7 +98,7 @@ class LectureController extends Controller
         $filters = [AllowedFilter::exact('course_id'), AllowedFilter::exact('day_id'), AllowedFilter::exact('period_id'), 'location', 'lecturer'];
         $sorts = ['id', 'created_at', 'location', 'day_id', 'period_id', 'course_id'];
         $includes = ['day', 'period', 'course'];
-        return requestResponseWithInludesFilterSortRange(Lecture::class, $includes, $filters, $sorts, fn ($models) => $models);
+        return requestResponseWithInludesFilterSortRange(Lecture::class, $includes, $filters, $sorts, fn ($models) => BaseResource::collection($models));
     }
 
     public function store(StoreLectureRequest $request)
@@ -132,7 +133,7 @@ class LectureController extends Controller
 
     public function show(Lecture $lecture)
     {
-        return $lecture;
+        return new BaseResource($lecture);
     }
 
     public function update(UpdateLectureRequest $request, Lecture $lecture)

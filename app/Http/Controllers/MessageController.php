@@ -6,17 +6,16 @@ use App\Models\Message;
 use Spatie\QueryBuilder\QueryBuilder;
 use App\Http\Resources\MessageResource;
 use App\Http\Requests\StoreMessageRequest;
+use App\Http\Resources\BaseResource;
 
 class MessageController extends Controller
 {
 
     public function index()
     {
-        $messages = QueryBuilder::for(Message::class)
-            ->allowedFilters('user_id', 'year')
-            ->allowedSorts('created_at')
-            ->get();
-        return MessageResource::collection($messages);
+        $filters = ['user_id'];
+        $sorts = ['user_id', 'created_at'];
+        return requestResponseWithFilterRangeSort(Message::class, 'message', $filters, $sorts, fn ($models) => MessageResource::collection($models));
     }
     public function store(StoreMessageRequest $request)
     {

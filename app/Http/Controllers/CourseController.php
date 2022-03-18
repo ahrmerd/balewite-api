@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+
 use App\Models\Course;
-use Illuminate\Support\Facades\Auth;
-use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
+use App\Http\Resources\BaseResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class CourseController extends Controller
 {
@@ -96,7 +96,7 @@ class CourseController extends Controller
         $includes = ['departments', 'level', 'materials', 'quizzes', 'lectures'];
         $sorts = ['id', 'code', 'name', 'level_id', 'created_at'];
         $filters = ['code', 'name', AllowedFilter::exact('level_id')];
-        return requestResponseWithInludesFilterSortRange(Course::class, $includes, $filters, $sorts, fn ($models) => $models);
+        return requestResponseWithInludesFilterSortRange(Course::class, $includes, $filters, $sorts, fn ($models) => BaseResource::collection($models));
     }
 
     public function store(StoreCourseRequest $request)
@@ -128,7 +128,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        return $course;
+        return new BaseResource($course);
     }
 
     /**

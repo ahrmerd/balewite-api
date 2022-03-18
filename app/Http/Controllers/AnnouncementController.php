@@ -89,9 +89,11 @@ class AnnouncementController extends Controller
      */
     public function index(Request $request)
     {
+        // dump(BaseResource::class::collection(Announcement::all()));
+        // return response(BaseResource::collection(Announcement::all()));
         $filters = [AllowedFilter::exact('priority'), AllowedFilter::exact('user_id'), 'title', 'label'];
         $sorts = ['id', 'created_at', 'title', 'priority'];
-        return requestResponseWithFilterRangeSort(Announcement::class, 'announcement', $filters, $sorts, fn ($models) => BaseResource::collection($models));
+        return requestResponseWithFilterRangeSort(Announcement::class, 'announcement', $filters, $sorts, fn ($models) => BaseResource::collection($models), BaseResource::class);
     }
 
     public function store(StoreAnnouncementRequest $request)

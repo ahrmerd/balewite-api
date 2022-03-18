@@ -43,7 +43,9 @@ class LevelController extends Controller
 
     public function index()
     {
-        return response(Level::all())->header('Total-Count', Level::query()->count());
+        $sorts = ['id', 'level', 'created_at'];
+        return requestResponseWithFilterRangeSort(Level::class, 'level', [], $sorts, fn ($models) => BaseResource::collection($models));
+        // return response(Level::all())->header('Total-Count', Level::query()->count());
     }
 
     public function store(StoreLevelRequest $request)
@@ -83,7 +85,7 @@ class LevelController extends Controller
      */
     public function show(Level $level)
     {
-        return $level;
+        return new BaseResource($level);
     }
 
     public function update(UpdateLevelRequest $request, Level $level)

@@ -19,7 +19,9 @@ class PeriodController extends Controller
 
     public function index()
     {
-        return response(Period::all(), 200)->header('Total-Count', Period::query()->count());
+        $sorts = ['id', 'created_at', 'start_time', 'end_time'];
+        return requestResponseWithFilterRangeSort(Period::class, '', [], $sorts, fn ($m) => BaseResource::collection($m));
+        // return response(Period::all(), 200)->header('Total-Count', Period::query()->count());
     }
 
     public function store(StorePeriodRequest $request)
@@ -29,7 +31,7 @@ class PeriodController extends Controller
 
     public function show(Period $period)
     {
-        return $period;
+        return new BaseResource($period);
     }
 
     public function update(UpdatePeriodRequest $request, Period $period)

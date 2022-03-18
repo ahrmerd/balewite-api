@@ -17,7 +17,9 @@ class DayController extends Controller
     }
     public function index()
     {
-        return response(Day::all(), 200)->header('Total-Count', Day::query()->count());
+        $sorts = ['id', 'created_at', 'day'];
+        return requestResponseWithFilterRangeSort(Day::class, 'day', [], $sorts, fn ($model) => BaseResource::collection($model));
+        // return response(BaseResource::collection(Day::all()), 200)->header('Total-Count', Day::query()->count());
     }
 
 
@@ -28,7 +30,7 @@ class DayController extends Controller
 
     public function show(Day $day)
     {
-        return $day;
+        return new BaseResource($day);
     }
 
     public function update(UpdateDayRequest $request, Day $day)

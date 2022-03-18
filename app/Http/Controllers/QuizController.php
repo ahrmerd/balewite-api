@@ -87,13 +87,10 @@ class QuizController extends Controller
      */
     public function index(Request $request)
     {
-        $quizzes = QueryBuilder::for('App\Models\Quiz')
-            ->allowedFilters('title', 'year',  AllowedFilter::exact('course_id'),)
-            ->allowedSorts(['created_at', 'id', 'year', 'title'])
-            ->allowedIncludes(['course'])
-            ->withRange()
-            ->get();
-        return response(QuizCollection::collection($quizzes))->header('Total-count', Quiz::query()->count());
+        $filters = ['title', 'year',  AllowedFilter::exact('course_id'),];
+        $sorts = ['created_at', 'id', 'year', 'title'];
+        $includes = ['course'];
+        return requestResponseWithInludesFilterSortRange(Quiz::class, $includes, $filters, $sorts, fn ($model) => QuizCollection::collection($model));
     }
     public function store(StoreQuizRequest $request)
     {
