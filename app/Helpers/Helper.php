@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Resources\DepartmentResource;
+use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -14,28 +16,27 @@ function requestResponseWithInludesFilterSortRange($model, $includes, $filters, 
 {
     $modelInstance = new $model;
     $total = $modelInstance::count();
-    $models = QueryBuilder::for($model)
+    $query = QueryBuilder::for($model)
         ->allowedIncludes($includes)
         ->allowedFilters($filters)
         ->allowedSorts($sorts)
-        ->withRange()
-        ->get();
-    $total = $modelInstance->count();
-    $modelsCollection =  $callback($models);
-    return response($modelsCollection)->header('Total-Count', $total);
+        ->withRange();
+    $models = request()->has('page') ? $query->paginate() : $query->get();
+    // DepartmentResource::collection($model)->additional()
+    return $callback($models)->additional(['Total-Count' => $total]);
 }
 function requestResponseWithFilterRangeSort($model, $searchField, $filters, $sorts, $callback)
 {
     $modelInstance = new $model;
     $total = $modelInstance::count();
-    $models = QueryBuilder::for($model)
+    $query = QueryBuilder::for($model)
         ->allowedFilters($filters)
         ->allowedSorts($sorts)
         ->withRange()
-        ->searchIn($searchField)
-        ->get();
-    $modelsCollection =  $callback($models);
-    return response($modelsCollection)->header('Total-Count', $total);
+        ->searchIn($searchField);
+    $models = request()->has('page') ? $query->paginate() : $query->get();
+
+    return $callback($models)->additional(['Total-Count' => $total]);
 }
 
 function asModerator(&$obj)
