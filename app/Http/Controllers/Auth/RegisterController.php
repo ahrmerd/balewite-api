@@ -97,16 +97,15 @@ class RegisterController extends Controller
 
         Auth::login($user);
 
-        //return auth()->user();
 
+        return response(Auth::user(), 200);
+        // $token = $user->createToken('authToken')->plainTextToken;
 
-        $token = $user->createToken('authToken')->plainTextToken;
+        // if ($response = $this->registered($request, $user)) {
+        // return $response;
+        // }
+        // return new Response(['token_type' => 'bearer', 'token' => $token], 201);
 
-        if ($response = $this->registered($request, $user)) {
-            return $response;
-        }
-
-        return new Response(['token_type' => 'bearer', 'token' => $token], 201);
     }
 
     /**

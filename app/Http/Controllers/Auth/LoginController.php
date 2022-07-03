@@ -17,7 +17,7 @@ class LoginController extends Controller
 
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        // $this->middleware('guest')->except('logout');
     }
 
     /**
@@ -57,7 +57,7 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         if (Auth::check())
-            return response('you are already logged in');
+            return $this->sendLoginResponse($request);
         $this->validateLogin($request);
         if (method_exists($this, 'hasTooManyLoginAttempts') && $this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
@@ -108,12 +108,12 @@ class LoginController extends Controller
             return $response;
         }
 
-        return response('success', 200);
+        return response(Auth::user(), 200);
     }
 
     protected function authenticated(Request $request, $user)
     {
-        return response('success', 200);
+        return response(Auth::user(), 200);
     }
     protected function sendFailedLoginResponse(Request $request)
     {
