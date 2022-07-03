@@ -29,6 +29,11 @@ class Quiz extends Model
         return $this->hasMany(Question::class);
     }
 
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
     public function scopeFilterByDepartment($query)
     {
         $department = request('filter')['department'] ?? false;

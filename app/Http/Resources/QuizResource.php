@@ -9,6 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @OA\Xml(name="QuizResource"),
  * @OA\Property(property="id", type="integer", readOnly="true", example="1"),
  * @OA\Property(property="course_id", type="integer", readOnly="true", example="1"),
+ * @OA\Property(property="course", ref="#/components/schemas/Course"),
  * @OA\Property(property="title", type="string"),
  * @OA\Property(property="year", type="string"),
  * @OA\Property(property="created_at", ref="#/components/schemas/BaseModel/properties/created_at"),
@@ -29,7 +30,7 @@ class QuizResource extends JsonResource
         return [
             'id' => $this->id,
             // 'department' => $this->department->department,
-            'course_id' => $this->course_id,
+            'course' => $this->course,
             'title' => $this->title,
             'questions' => QuestionResource::collection($this->questions),
             'year' => $this->year,

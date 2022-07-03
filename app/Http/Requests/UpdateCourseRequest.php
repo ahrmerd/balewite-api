@@ -24,7 +24,7 @@ class UpdateCourseRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'string|unique:courses,code',
+            'code' => 'string',
             'name' => 'string',
             'level_id' => 'exists:levels,id',
         ];
